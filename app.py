@@ -42,9 +42,9 @@ def initialize_symptom_predictor():
     
     try:
         # Load trained model and encoders
-        loaded_model = joblib.load("disease_predictor_model.joblib")
-        loaded_symptom_index = joblib.load("symptom_index.joblib")
-        loaded_label_encoder = joblib.load("label_encoder.joblib")
+        loaded_model = joblib.load("models/disease_predictor_model.joblib")
+        loaded_symptom_index = joblib.load("utils/symptom_index.joblib")
+        loaded_label_encoder = joblib.load("utils/label_encoder.joblib")
         print("✓ Symptom model and encoders loaded successfully")
     except Exception as e:
         print(f"✗ Error loading symptom model files: {e}")
@@ -54,11 +54,11 @@ def initialize_symptom_predictor():
     
     try:
         # Load datasets
-        df_dataset = pd.read_csv('dataset.csv') 
-        df_description = pd.read_csv('disease_description.csv')
-        df_precaution = pd.read_csv('disease_precaution.csv')
-        df_disease_severity = pd.read_csv('disease_severity.csv')
-        df_symptom_severity = pd.read_csv('symptom_severity.csv')
+        df_dataset = pd.read_csv('datasets/dataset.csv') 
+        df_description = pd.read_csv('datasets/disease_description.csv')
+        df_precaution = pd.read_csv('datasets/disease_precaution.csv')
+        df_disease_severity = pd.read_csv('datasets/disease_severity.csv')
+        df_symptom_severity = pd.read_csv('datasets/symptom_severity.csv')
         print("✓ Symptom datasets loaded successfully")
     except Exception as e:
         print(f"✗ Error loading symptom CSV files: {e}")
@@ -121,7 +121,7 @@ def initialize_skin_predictor():
     
     # Load skin disease information
     try:
-        skin_disease_df = pd.read_csv("skin_diseases.csv")
+        skin_disease_df = pd.read_csv("datasets/skin_diseases.csv")
         skin_disease_info = {}
         for _, row in skin_disease_df.iterrows():
             skin_disease_info[row['Disease']] = {
@@ -140,7 +140,7 @@ def initialize_skin_predictor():
         skin_model = EfficientNet.from_name("efficientnet-b0")
         NUM_CLASSES = len(skin_class_names)
         skin_model._fc = torch.nn.Linear(skin_model._fc.in_features, NUM_CLASSES)
-        state_dict = torch.load("skin_disease_classifier_model.pth", map_location=device)
+        state_dict = torch.load("models/skin_disease_classifier_model.pth", map_location=device)
         skin_model.load_state_dict(state_dict)
         skin_model.to(device)
         skin_model.eval()
