@@ -42,9 +42,9 @@ def initialize_symptom_predictor():
     
     try:
         # Load trained model and encoders
-        loaded_model = joblib.load('disease_predictor_model.joblib')
-        loaded_symptom_index = joblib.load('symptom_index.joblib')
-        loaded_label_encoder = joblib.load('label_encoder.joblib')
+        loaded_model = joblib.load("disease_predictor_model.joblib")
+        loaded_symptom_index = joblib.load("symptom_index.joblib")
+        loaded_label_encoder = joblib.load("label_encoder.joblib")
         print("✓ Symptom model and encoders loaded successfully")
     except Exception as e:
         print(f"✗ Error loading symptom model files: {e}")
@@ -466,7 +466,7 @@ def health_check():
 # ==================== MAIN ENTRY POINT ====================
 if __name__ == '__main__':
     print("=" * 50)
-    print("MEDICAL DIAGNOSIS AI SYSTEM")
+    print("MediAssist - Medical Diagnosis AI System")
     print("=" * 50)
     
     # Initialize both systems

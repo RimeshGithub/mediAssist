@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medical Diagnosis AI System</title>
+    <title>MediAssist - Medical Diagnosis AI System</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -73,14 +73,13 @@
             border-radius: 0 15px 15px 15px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             padding: 40px;
-            min-height: 600px;
         }
         
         /* Common Card Styles */
         .content-card {
             background: white;
             border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 0px 15px rgba(0,0,0,0.1);
             padding: 30px;
             margin-bottom: 30px;
         }
@@ -182,16 +181,11 @@
         /* Prediction Cards */
         .prediction-card {
             border: none;
-            border-radius: 15px;
+            border-radius: 10px;
             overflow: hidden;
             transition: transform 0.3s, box-shadow 0.3s;
             margin-bottom: 20px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-        }
-        
-        .prediction-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
         }
         
         .disease-card.high-severity,
@@ -366,9 +360,10 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 10px;
-            max-height: 500px;
+            max-height: 320px;
             overflow-y: auto;
             padding: 10px;
+            align-items: start;
         }
         
         .symptom-item {
@@ -482,7 +477,7 @@
         <!-- Header -->
         <div class="header text-center">
             <h1 class="display-5 fw-bold text-primary mb-3">
-                <i class="fas fa-stethoscope me-3"></i>Medical Diagnosis AI System
+                <i class="fas fa-stethoscope me-3"></i>MediAssist - Medical Diagnosis AI System
             </h1>
             <p class="lead text-muted">
                 Get AI-powered predictions for diseases using symptoms or skin images
@@ -490,7 +485,7 @@
         </div>
 
         <!-- Tab Navigation -->
-        <ul class="nav nav-tabs" id="diagnosisTabs" role="tablist">
+        <ul class="nav nav-tabs" id="diagnosisTabs" role="tablist" style="display: flex; justify-content: center;">
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="symptom-tab" data-bs-toggle="tab" 
                         data-bs-target="#symptom" type="button" role="tab">
@@ -500,13 +495,13 @@
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="skin-tab" data-bs-toggle="tab" 
                         data-bs-target="#skin" type="button" role="tab">
-                    <i class="fas fa-allergies me-2"></i>Skin Disease Detection
+                    <i class="fas fa-allergies me-2"></i>Skin Disease Classifier
                 </button>
             </li>
         </ul>
 
         <!-- Tab Content -->
-        <div class="tab-content" id="diagnosisTabContent">
+        <div class="tab-content" id="diagnosisTabContent" style="border-radius: 0px; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
             <!-- Symptom-Based Diagnosis Tab -->
             <div class="tab-pane fade show active" id="symptom" role="tabpanel">
                 <div class="content-card">
@@ -520,11 +515,11 @@
                                 <i class="fas fa-search text-muted"></i>
                             </span>
                             <input type="text" id="symptomSearch" class="form-control border-start-0"
-                                   placeholder="Type to search symptoms (e.g., 'fever', 'headache', ...)">
+                                   placeholder="Type to search symptoms ( e.g., 'fever', 'headache', ... )">
                             <button class="btn btn-primary" type="button" onclick="searchSymptoms()" style="margin-left: 10px;">
                                 <i class="fas fa-search me-1"></i> Search
                             </button>
-                            <button class="btn btn-primary text-white" type="button" onclick="showAllSymptoms()" style="margin-left: 5px;">
+                            <button class="btn btn-primary text-white" type="button" onclick="showAllSymptoms()" style="margin-left: 5px; border-radius: 0px;">
                                 <i class="fas fa-list me-1"></i> View All
                             </button>
                         </div>
@@ -550,34 +545,25 @@
                 </div>
 
                 <!-- Tips Section -->
-                <div class="content-card">
-                    <h5 class="mb-4">
-                        <i class="fas fa-lightbulb me-2"></i>Quick Tips for Better Diagnosis
-                    </h5>
-                    <div class="tips-grid">
-                        <div class="tip-card">
-                            <i class="fas fa-search text-primary fs-3 mb-2"></i>
-                            <h6>Be Specific</h6>
-                            <p class="small mb-0">Select all relevant symptoms for accurate results</p>
-                        </div>
-                        <div class="tip-card">
-                            <i class="fas fa-list text-info fs-3 mb-2"></i>
-                            <h6>Comprehensive</h6>
-                            <p class="small mb-0">More symptoms lead to better predictions</p>
-                        </div>
-                        <div class="tip-card">
-                            <i class="fas fa-clock text-warning fs-3 mb-2"></i>
-                            <h6>Duration Matters</h6>
-                            <p class="small mb-0">Note how long symptoms have persisted</p>
-                        </div>
-                        <div class="tip-card">
-                            <i class="fas fa-exclamation-triangle text-danger fs-3 mb-2"></i>
-                            <h6>Severity</h6>
-                            <p class="small mb-0">Consider symptom intensity and frequency</p>
-                        </div>
+                
+                <div class="tips-grid mt-4" style="cursor: default;">
+                    <div class="tip-card">
+                        <i class="fas fa-search text-primary fs-3 mb-2"></i>
+                        <h6>Be Specific</h6>
+                        <p class="small mb-0">Select all relevant symptoms for accurate results</p>
+                    </div>
+                    <div class="tip-card">
+                        <i class="fas fa-list text-info fs-3 mb-2"></i>
+                        <h6>Comprehensive</h6>
+                        <p class="small mb-0">More symptoms lead to better predictions</p>
+                    </div>
+                    <div class="tip-card">
+                        <i class="fas fa-user-md text-success fs-3 mb-2"></i>
+                        <h6>Medical Advice</h6>
+                        <p class="small mb-0">Predictions are not a substitute for a doctor</p>
                     </div>
                 </div>
-
+                
                 <!-- Loading Spinner -->
                 <div id="symptomLoadingSpinner" class="loading-spinner">
                     <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
@@ -588,7 +574,7 @@
                 </div>
 
                 <!-- Results Section -->
-                <div id="symptomResultsSection" class="results-section">
+                <div id="symptomResultsSection" class="results-section" style="margin-top: 40px;">
                     <div class="content-card">
                         <h3 class="text-primary mb-4">
                             <i class="fas fa-clipboard-list me-2"></i>Prediction Results
@@ -606,7 +592,7 @@
                         
                         <!-- Predictions -->
                         <h4 class="mb-4">Top Predictions</h4>
-                        <div id="predictionsContainer"></div>
+                        <div id="predictionsContainer" style="display: flex; flex-direction: column; gap: 20px;"></div>
                         
                         <!-- Doctor Recommendation -->
                         <div id="doctorRecommendation" class="doctor-recommendation">
@@ -621,7 +607,7 @@
                 </div>
             </div>
 
-            <!-- Skin Disease Detection Tab -->
+            <!-- Skin Disease Classifier Tab -->
             <div class="tab-pane fade" id="skin" role="tabpanel">
                 <div class="content-card">
                     <h3 class="mb-4">
@@ -639,29 +625,25 @@
                             </button>
                         </div>
                     </form>
-                    
-                    <!-- Tips Grid -->
-                    <div class="tips-grid mt-4">
-                        <div class="tip-card">
-                            <i class="fas fa-lightbulb text-warning fs-3 mb-2"></i>
-                            <h6>Good Lighting</h6>
-                            <p class="small mb-0">Ensure clear, well-lit photos</p>
-                        </div>
-                        <div class="tip-card">
-                            <i class="fas fa-search-plus text-info fs-3 mb-2"></i>
-                            <h6>Close-Up Shot</h6>
-                            <p class="small mb-0">Focus on the affected area</p>
-                        </div>
-                        <div class="tip-card">
-                            <i class="fas fa-hand-sparkles text-success fs-3 mb-2"></i>
-                            <h6>Clean Skin</h6>
-                            <p class="small mb-0">Remove makeup or creams</p>
-                        </div>
-                        <div class="tip-card">
-                            <i class="fas fa-ruler-combined text-primary fs-3 mb-2"></i>
-                            <h6>Include Scale</h6>
-                            <p class="small mb-0">Show size with a reference</p>
-                        </div>
+                </div>
+
+                <!-- Tips Section -->
+
+                <div class="tips-grid mt-4" style="cursor: default;">
+                    <div class="tip-card">
+                        <i class="fas fa-lightbulb text-warning fs-3 mb-2"></i>
+                        <h6>Good Lighting</h6>
+                        <p class="small mb-0">Ensure clear, well-lit photos</p>
+                    </div>
+                    <div class="tip-card">
+                        <i class="fas fa-search-plus text-info fs-3 mb-2"></i>
+                        <h6>Close-Up Shot</h6>
+                        <p class="small mb-0">Focus on the affected area</p>
+                    </div>
+                    <div class="tip-card">
+                        <i class="fas fa-hand-sparkles text-success fs-3 mb-2"></i>
+                        <h6>Clean Skin</h6>
+                        <p class="small mb-0">Remove makeup or creams</p>
                     </div>
                 </div>
 
@@ -673,7 +655,7 @@
                     <img id="skinPreview" class="image-preview" src="#" alt="Uploaded Image">
                     <div class="text-center mt-4">
                         <button type="button" class="btn btn-primary btn-lg me-2" onclick="predictSkinDisease()">
-                            <i class="fas fa-brain me-2"></i>Analyze Image
+                            <i class="fas fa-brain me-2"></i>Predict Disease
                         </button>
                         <button type="button" class="btn btn-outline-secondary btn-lg" onclick="clearSkinImage()">
                             <i class="fas fa-times me-2"></i>Remove Image
@@ -747,7 +729,7 @@
         </div>
 
         <!-- Common Disclaimer -->
-        <div class="alert alert-warning mt-4">
+        <div class="alert alert-warning mt-4" style="border-radius: 15px;">
             <h5><i class="fas fa-exclamation-triangle me-2"></i>Important Medical Disclaimer</h5>
             <p class="mb-0">
                 This AI-powered prediction system is for informational and educational purposes only. 
@@ -784,12 +766,12 @@
                             </small>
                         </div>
                     </div>
-                    <div id="allSymptomsGrid" class="all-symptoms-grid" style="height: 320px;">
+                    <div id="allSymptomsGrid" class="all-symptoms-grid">
                         <!-- Symptoms will be loaded here -->
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" onclick="applySymptomSelection()">
                         <i class="fas fa-check me-2"></i>Apply Selection
                     </button>
@@ -1083,7 +1065,7 @@
                 const severityClass = `severity-${prediction.severity.toLowerCase()}`;
                 
                 predictionsHtml += `
-                    <div class="disease-card card ${prediction.severity.toLowerCase()}-severity fade-in">
+                    <div class="disease-card card ${prediction.severity.toLowerCase()}-severity fade-in" style="border-radius: 10px">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-8">
