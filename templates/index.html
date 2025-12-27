@@ -592,7 +592,7 @@
                         
                         <!-- Predictions -->
                         <h4 class="mb-4">Top Predictions</h4>
-                        <div id="predictionsContainer" style="display: flex; flex-direction: column; gap: 20px;"></div>
+                        <div id="predictionsContainer" style="display: flex; flex-direction: column; gap: 25px; margin-bottom: 30px;"></div>
                         
                         <!-- Doctor Recommendation -->
                         <div id="doctorRecommendation" class="doctor-recommendation">
@@ -619,7 +619,8 @@
                             <i class="fas fa-camera upload-icon"></i>
                             <h5>Click to Upload or Drag & Drop</h5>
                             <p class="text-muted mb-3">Select a clear image of the affected skin area</p>
-                            <input type="file" id="skinImageInput" name="image" accept="image/*" required style="display: none;">
+                            <input type="file" id="skinImageInput" name="image" accept="image/*" required style="display: none;" 
+                                oninput="setTimeout(() => {document.getElementById('previewContainer').scrollIntoView({behavior: 'smooth', block: 'start'})}, 500)">
                             <button type="button" class="btn btn-primary btn-lg" onclick="document.getElementById('skinImageInput').click()">
                                 <i class="fas fa-folder-open me-2"></i>Choose Image
                             </button>
@@ -693,7 +694,9 @@
                                     
                                     <div class="info-section">
                                         <h6><i class="fas fa-exclamation-circle me-2"></i>Causes</h6>
-                                        <p id="skinDiseaseCauses" class="mb-0">Causes will appear here.</p>
+                                        <ul class="info-list" id="skinDiseaseCauses">
+                                            <li>Causes will appear here</li>
+                                        </ul>
                                     </div>
                                     
                                     <div class="info-section">
@@ -1227,8 +1230,23 @@
             document.getElementById('skinDiseaseName').textContent = data.prediction;
             document.getElementById('skinConfidenceValue').textContent = data.confidence;
             document.getElementById('skinDiseaseDescription').textContent = data.description;
-            document.getElementById('skinDiseaseCauses').textContent = data.causes;
-            
+
+            // Modified section: Display Causes as a split list
+            const causesList = document.getElementById('skinDiseaseCauses');
+            causesList.innerHTML = ''; // Clear current content
+            if (data.causes && data.causes.length > 0) {
+                String(data.causes).split(';').forEach(cause => {
+                    const li = document.createElement('li');
+                    // Using a warning icon and trim() to handle spacing
+                    li.innerHTML = '<i class="fas fa-exclamation-triangle text-warning me-2"></i>' + cause.trim();
+                    causesList.appendChild(li);
+                });
+            } else {
+                const li = document.createElement('li');
+                li.textContent = 'Information on specific causes is unavailable';
+                causesList.appendChild(li);
+            }
+
             // Set severity
             const severityBadge = document.getElementById('skinSeverityBadge');
             const predictionCard = document.getElementById('skinPredictionCard');
@@ -1236,14 +1254,14 @@
             severityBadge.textContent = data.severity + ' Severity';
             severityBadge.className = 'severity-badge ms-2 severity-' + severity;
             predictionCard.className = 'prediction-card card ' + severity + '-severity';
-            
+
             // Display precautions
             const precautionsList = document.getElementById('skinDiseasePrecautions');
             precautionsList.innerHTML = '';
             if (data.precautions && data.precautions.length > 0) {
-                data.precautions.forEach(precaution => {
+                String(data.precautions).split(';').forEach(precaution => {
                     const li = document.createElement('li');
-                    li.innerHTML = '<i class="fas fa-check-circle text-success me-2"></i>' + precaution;
+                    li.innerHTML = '<i class="fas fa-check-circle text-success me-2"></i>' + precaution.trim();
                     precautionsList.appendChild(li);
                 });
             } else {
@@ -1251,7 +1269,7 @@
                 li.textContent = 'Consult a dermatologist for specific precautions';
                 precautionsList.appendChild(li);
             }
-            
+
             // Show results section
             document.getElementById('skinResultsSection').style.display = 'block';
             document.getElementById('skinResultsSection').classList.add('fade-in');
