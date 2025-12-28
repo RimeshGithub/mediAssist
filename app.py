@@ -24,7 +24,7 @@ loaded_label_encoder = None
 symptom_list = []
 severity_map = {}
 df_description = pd.DataFrame()
-df_precaution = pd.DataFrame()
+df_causes_precautions = pd.DataFrame()
 df_disease_severity = pd.DataFrame()
 
 # Skin disease prediction variables
@@ -38,7 +38,7 @@ skin_disease_info = {}
 def initialize_symptom_predictor():
     """Initialize symptom prediction models and data"""
     global loaded_model, loaded_symptom_index, loaded_label_encoder
-    global symptom_list, severity_map, df_description, df_precaution, df_disease_severity
+    global symptom_list, severity_map, df_description, df_disease_severity, df_causes_precautions
     
     try:
         # Load trained model and encoders
@@ -56,7 +56,7 @@ def initialize_symptom_predictor():
         # Load datasets
         df_dataset = pd.read_csv('datasets/dataset.csv') 
         df_description = pd.read_csv('datasets/disease_description.csv')
-        df_precaution = pd.read_csv('datasets/disease_precaution.csv')
+        df_causes_precautions = pd.read_csv('datasets/disease_causes_precautions.csv')
         df_disease_severity = pd.read_csv('datasets/disease_severity.csv')
         df_symptom_severity = pd.read_csv('datasets/symptom_severity.csv')
         print("✓ Symptom datasets loaded successfully")
@@ -64,7 +64,7 @@ def initialize_symptom_predictor():
         print(f"✗ Error loading symptom CSV files: {e}")
         df_dataset = pd.DataFrame()
         df_description = pd.DataFrame()
-        df_precaution = pd.DataFrame()
+        df_causes_precautions = pd.DataFrame()
         df_disease_severity = pd.DataFrame()
         df_symptom_severity = pd.DataFrame()
     
@@ -208,20 +208,19 @@ def get_disease_description(disease_name):
 
 def get_disease_precautions(disease_name):
     """Get precautions for the disease"""
-    if df_precaution.empty:
-        return ["Consult a doctor", "Take prescribed medication", "Get adequate rest", "Maintain good hygiene"]
-    
     disease_name_clean = str(disease_name).strip().lower()
-    for idx, row in df_precaution.iterrows():
+    for idx, row in df_causes_precautions.iterrows():
         if str(row['Disease']).strip().lower() == disease_name_clean:
-            precautions = []
-            for i in range(1, 5):
-                col_name = f'Precaution_{i}'
-                if col_name in row and pd.notna(row[col_name]):
-                    precautions.append(str(row[col_name]))
+            precautions = str(row['Precautions'])
             return precautions
-    
-    return ["Consult a doctor", "Take prescribed medication", "Get adequate rest", "Maintain good hygiene"]
+
+def get_disease_causes(disease_name):
+    """Get causes for the disease"""
+    disease_name_clean = str(disease_name).strip().lower()
+    for idx, row in df_causes_precautions.iterrows():
+        if str(row['Disease']).strip().lower() == disease_name_clean:
+            causes = str(row['Causes'])
+            return causes
 
 def get_disease_severity(disease_name):
     """Show disease severity"""
@@ -316,6 +315,7 @@ def predict_symptom():
                 'disease': str(disease_name).title(),
                 'confidence': float(confidence),
                 'description': get_disease_description(disease_name),
+                'causes': get_disease_causes(disease_name),
                 'precautions': get_disease_precautions(disease_name),
                 'severity': get_disease_severity(disease_name)
             })

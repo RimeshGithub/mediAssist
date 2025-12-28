@@ -285,13 +285,14 @@
             background: #f8f9fa;
             border-radius: 10px;
             padding: 20px;
+            padding-bottom: 2px;
             margin-top: 20px;
         }
         
-        .info-section h6 {
+        .info-section h5 {
             color: var(--primary-color);
             font-weight: 600;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
         
         .info-list {
@@ -693,14 +694,14 @@
                                     </p>
                                     
                                     <div class="info-section">
-                                        <h6><i class="fas fa-exclamation-circle me-2"></i>Causes</h6>
+                                        <h5>Causes</h5>
                                         <ul class="info-list" id="skinDiseaseCauses">
                                             <li>Causes will appear here</li>
                                         </ul>
                                     </div>
                                     
                                     <div class="info-section">
-                                        <h6><i class="fas fa-shield-alt me-2"></i>Precautions</h6>
+                                        <h5>Precautions</h5>
                                         <ul class="info-list" id="skinDiseasePrecautions">
                                             <li>Precautions will appear here</li>
                                         </ul>
@@ -1081,13 +1082,40 @@
                                     <p class="card-text text-muted mb-3">
                                         <i class="fas fa-info-circle me-1"></i> ${prediction.description}
                                     </p>
+
+                                    <div class="info-section">
+                                        <h5>Causes</h5>
+                                        <ul class="info-list">
+                                            ${
+                                                String(prediction.causes)
+                                                    .split(';')
+                                                    .map(cause => 
+                                                        `<li>
+                                                            <i class="fas fa-exclamation-triangle text-warning me-2"></i>
+                                                            ${cause.trim()}
+                                                        </li>`
+                                                    )
+                                                    .join('')
+                                            }
+                                        </ul>
+                                    </div>
                                     
-                                    <h6 class="mt-4">Precautions:</h6>
-                                    <ul class="precaution-list list-unstyled">
-                                        ${prediction.precautions.map(precaution => 
-                                            `<li><i class="fas fa-shield-alt text-success me-2"></i> ${precaution}</li>`
-                                        ).join('')}
-                                    </ul>
+                                    <div class="info-section">
+                                        <h5>Precautions</h5>
+                                        <ul class="info-list">
+                                            ${
+                                                String(prediction.precautions)
+                                                    .split(';')
+                                                    .map(precaution => 
+                                                        `<li>
+                                                            <i class="fas fa-shield-alt text-success me-2"></i>
+                                                            ${precaution.trim()}
+                                                        </li>`
+                                                    )
+                                                    .join('')
+                                            }
+                                        </ul>
+                                    </div>
                                 </div>
                                 
                                 <div class="col-md-4">
@@ -1229,7 +1257,7 @@
         function displaySkinResults(data) {
             document.getElementById('skinDiseaseName').textContent = data.prediction;
             document.getElementById('skinConfidenceValue').textContent = data.confidence;
-            document.getElementById('skinDiseaseDescription').textContent = data.description;
+            document.getElementById('skinDiseaseDescription').innerHTML = `<i class="fas fa-info-circle me-1"></i> ` + data.description;
 
             // Modified section: Display Causes as a split list
             const causesList = document.getElementById('skinDiseaseCauses');
@@ -1238,7 +1266,7 @@
                 String(data.causes).split(';').forEach(cause => {
                     const li = document.createElement('li');
                     // Using a warning icon and trim() to handle spacing
-                    li.innerHTML = '<i class="fas fa-exclamation-triangle text-warning me-2"></i>' + cause.trim();
+                    li.innerHTML = '<i class="fas fa-exclamation-triangle text-warning me-2"></i> ' + cause.trim();
                     causesList.appendChild(li);
                 });
             } else {
@@ -1261,7 +1289,7 @@
             if (data.precautions && data.precautions.length > 0) {
                 String(data.precautions).split(';').forEach(precaution => {
                     const li = document.createElement('li');
-                    li.innerHTML = '<i class="fas fa-check-circle text-success me-2"></i>' + precaution.trim();
+                    li.innerHTML = '<i class="fas fa-shield-alt text-success me-2"></i> ' + precaution.trim();
                     precautionsList.appendChild(li);
                 });
             } else {
