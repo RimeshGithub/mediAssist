@@ -5,12 +5,9 @@ import joblib
 from PIL import Image
 import torch
 import torch.nn.functional as F
-from torchvision import transforms
-from efficientnet_pytorch import EfficientNet
+from torchvision import transforms, models
 import io
 import base64
-import json
-import os
 import traceback
 
 app = Flask(__name__)
@@ -137,10 +134,14 @@ def initialize_skin_predictor():
     
     # Load skin disease model
     try:
-        skin_model = EfficientNet.from_name("efficientnet-b0")
+        skin_model = models.convnext_tiny(weights=models.ConvNeXt_Tiny_Weights.DEFAULT)
         NUM_CLASSES = len(skin_class_names)
-        skin_model._fc = torch.nn.Linear(skin_model._fc.in_features, NUM_CLASSES)
-        state_dict = torch.load("models/skin_disease_classifier_model.pth", map_location=device)
+
+        # Update the classifier head
+        n_inputs = skin_model.classifier[2].in_features
+        skin_model.classifier[2] = torch.nn.Linear(n_inputs, NUM_CLASSES)
+        
+        state_dict = torch.load("models/convnext_tiny_model.pth", map_location=device)
         skin_model.load_state_dict(state_dict)
         skin_model.to(device)
         skin_model.eval()
