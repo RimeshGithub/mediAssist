@@ -1,0 +1,8 @@
+Flask
+pandas
+numpy
+joblib
+Pillow
+torch
+torchvision
+scikit-learn
