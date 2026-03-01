@@ -432,6 +432,21 @@
         .fade-in {
             animation: fadeIn 0.5s ease-in;
         }
+
+        .category-title {
+            display: block;
+            width: 100%;
+            margin-top: 0px;
+        }
+
+        #allSymptomsGrid {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .category-title {
+            flex-basis: 100%;
+        }
         
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -878,23 +893,88 @@
             }
         }
         
+        const symptomCategories = {
+            "General Symptoms": [
+                "headache", "runny nose", "cough", "fatigue", "high fever", "mild fever",
+                "chills", "loss of appetite", "vomiting", "nausea", "sweating", "weight gain", 
+                "weight loss", "dehydration", "malaise", "lethargy"
+            ],
+
+            "Digestive System": [
+                "abdominal pain", "belly pain", "stomach pain", "stomach bleeding",
+                "diarrhoea", "constipation", 
+                "indigestion", "acidity", "passage of gases"
+            ],
+
+            "Respiratory System": [
+                "breathlessness", "phlegm", "mucoid sputum",
+                "rusty sputum", "blood in sputum", "congestion", "sinus pressure", "throat irritation"
+            ],
+
+            "Skin & Hair": [
+                "itching", "skin rash", "skin peeling", "blister",
+                "blackheads", "pus filled pimples", "red spots over body",
+                "yellow crust ooze", "silver like dusting"
+            ],
+
+            "Neurological": [
+                "dizziness", "loss of balance", "slurred speech",
+                "unsteadiness", "weakness in limbs", "weakness of one body side",
+                "coma", "spinning movements"
+            ],
+
+            "Urinary System": [
+                "burning micturition", "bladder discomfort",
+                "continuous feel of urine", "spotting  urination",
+                "dark urine", "yellow urine", "foul smell of urine"
+            ],
+
+            "Musculoskeletal": [
+                "joint pain", "knee pain", "back pain", "neck pain",
+                "muscle pain", "muscle weakness", "swelling joints",
+                "movement stiffness"
+            ],
+
+            "Mental Health": [
+                "anxiety", "depression", "mood swings",
+                "irritability", "restlessness", "lack of concentration"
+            ]
+        }
+
         // Display all symptoms in modal
         function displayAllSymptoms(symptoms) {
             const grid = document.getElementById('allSymptomsGrid');
             let html = '';
-            
-            symptoms.forEach(symptom => {
-                const isSelected = selectedSymptoms.includes(symptom);
-                html += `
-                    <div class="symptom-item ${isSelected ? 'selected' : ''}" 
-                         onclick="toggleSymptomInModal('${symptom}')" 
-                         data-symptom="${symptom}">
-                        ${isSelected ? '<i class="fas fa-check-circle me-1"></i>' : ''}
-                        ${symptom.replace(/_/g, ' ')}
-                    </div>
-                `;
+
+            Object.keys(symptomCategories).forEach(category => {
+
+                const categorySymptoms = symptomCategories[category]
+                    .filter(symptom => symptoms.includes(symptom));
+
+                if (categorySymptoms.length > 0) {
+
+                    // Force new line before category
+                    html += `
+                        <div style="width:100%; margin-top:20px;">
+                            <h5 class="category-title">${category}</h5>
+                        </div>
+                    `;
+
+                    categorySymptoms.forEach(symptom => {
+                        const isSelected = selectedSymptoms.includes(symptom);
+
+                        html += `
+                            <div class="symptom-item ${isSelected ? 'selected' : ''}" 
+                                onclick="toggleSymptomInModal('${symptom}')" 
+                                data-symptom="${symptom}">
+                                ${isSelected ? '<i class="fas fa-check-circle me-1"></i>' : ''}
+                                ${symptom.replace(/_/g, ' ')}
+                            </div>
+                        `;
+                    });
+                }
             });
-            
+
             grid.innerHTML = html;
             updateSelectedCount();
         }
