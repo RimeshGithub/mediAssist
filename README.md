@@ -10,12 +10,16 @@
 
 ### To run locally: 
 
-1. python -m venv env     
+1. download zip folder and unzip
+   
+2. cd to project folder
+   
+3. python -m venv env     
 
-2. cd .\env\Scripts\Activate             
+4. cd .\env\Scripts\Activate             
 
-3. pip install -r requirements.txt
+5. pip install -r requirements.txt
 
-4. pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+6. pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
 
-5. python app.py  
+7. python app.py  
