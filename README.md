@@ -10,7 +10,7 @@
 
 ### To run locally: 
 
-1. download zip folder and unzip
+1. download zip file and unzip
    
 2. cd to project folder
    
