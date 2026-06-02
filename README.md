@@ -16,7 +16,7 @@
    
 3. python -m venv env     
 
-4. cd .\env\Scripts\Activate             
+4. .\env\Scripts\Activate             
 
 5. pip install -r requirements.txt
 
